@@ -1,5 +1,10 @@
 # Dataset
 datasets/
+color_dict_*
+
+#saved models
+models/Inception/*.pkl
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -5,8 +5,8 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 
 # Download NLTK resources (stopwords and punkt tokenizer)
-nltk.download('stopwords')
-nltk.download('punkt')
+# nltk.download('stopwords')
+# nltk.download('punkt')
 
 
 def preprocess_string(input_string):

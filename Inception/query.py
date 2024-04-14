@@ -18,13 +18,13 @@ number_retrieved = 6
 # query_image = "/Users/gsp/Downloads/1516264345931.jpeg"
 # query_text = "woman floral" ## Make sure empty code handled
 
-learnt_data_space = "models/Inception/search_index.pkl"
-training_dict_files = 'models/Inception/images_list.pkl'
+learnt_data_space = "models/Inception/search_index_color.pkl"
+training_dict_files = 'models/Inception/images_list_color.pkl'
 # 'angular' is suitable for cosine similarity. Can also try "euclidean", "manhattan", "hamming", or "dot"
 distance_mode = 'angular'
 vector_length = 2346
 text_embeddings_file = 'models/Inception/text_embedding_df.pkl'
-text_weight = 200
+text_weight = 2000
 
 shape_labels = "datasets/DeepFashion/labels/shape/shape_anno_all.txt"
 fabric_texture_labels = "datasets/DeepFashion/labels/texture/fabric_ann.txt"

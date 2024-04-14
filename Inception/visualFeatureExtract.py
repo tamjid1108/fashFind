@@ -6,7 +6,7 @@ import os
 from PIL import Image
 
 
-model_path = "models/Inception/colored_visualiser.pth"
+model_path = "models/Inception/visualiser.pth"
 
 
 class Visualiser(nn.Module):
@@ -27,6 +27,8 @@ class Visualiser(nn.Module):
             self.device = torch.device('cuda:0')
         else:
             self.device = torch.device('cpu')
+
+        self.device = torch.device('cpu')
 
         self.to(self.device)
 
@@ -64,6 +66,24 @@ class Visualiser(nn.Module):
         input_batch = input_tensor.unsqueeze(0)
         return input_batch
 
+    def preprocess_images(self, image_filenames):
+        preprocess = torchvision.transforms.Compose([
+            torchvision.transforms.Resize(299),
+            torchvision.transforms.CenterCrop(299),
+            torchvision.transforms.ToTensor(),
+            torchvision.transforms.Normalize(
+                mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        ])
+
+        input_batch = []
+        for filename in image_filenames:
+            input_image = Image.open(filename)
+            input_tensor = preprocess(input_image)
+            input_batch.append(input_tensor)
+
+        input_batch = torch.stack(input_batch)
+        return input_batch
+
 
 sample = "MEN-Denim-id_00000080-01_7_additional.jpg"
 img1 = "datasets/DeepFashion/images/MEN-Denim-id_00000080-01_7_additional.jpg"
@@ -71,7 +91,11 @@ img1 = "datasets/DeepFashion/images/MEN-Denim-id_00000080-01_7_additional.jpg"
 
 # returns a list of 2048-length visual features from image_path
 def returnVisualFeatures(visualiser: Visualiser, image_path):
-    tensor1 = visualiser.preprocess_image(image_path)
+    if type(image_path) == list:
+        tensor1 = visualiser.preprocess_images(image_path)
+    else:
+        tensor1 = visualiser.preprocess_image(image_path)
+    tensor1 = tensor1.to(visualiser.device)
     image_results = visualiser.forward(tensor1)
     feature_list = torch.Tensor.tolist(image_results)
     return feature_list

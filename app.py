@@ -5,10 +5,10 @@ from Inception.query import Nearest_images
 from Inception.visualFeatureExtract import returnVisualFeatures, Visualiser
 
 
-def perform_search(image_query, text_query):
+def perform_search(image_query, text_query, weight):
     # Placeholder function to perform multimodal search
     st.write("Performing multimodal search...")
-    return Nearest_images(image_query, text_query)
+    return Nearest_images(image_query, text_query, weight)
 
 
 def display_search_results(images):
@@ -46,7 +46,7 @@ def main():
     st.set_page_config(page_title="Multimodal Search App", layout="wide")
 
     # Page title and description
-    st.title("Multimodal Search App")
+    st.title("fashFind")
     st.markdown(
         "This app allows you to perform multimodal search by providing an image and/or text query."
     )
@@ -64,6 +64,11 @@ def main():
     st.sidebar.subheader("Text Query")
     text_query = st.sidebar.text_input("Enter Text Query")
 
+    # Slider for setting a weight between 0 and 5000
+    st.sidebar.subheader("Text Weight")
+    weight = st.sidebar.slider(
+        "Select a number between 0 and 5000", 0, 5000)
+
     # Button to trigger search
     search_button = st.sidebar.button("Search")
 
@@ -79,8 +84,13 @@ def main():
     st.markdown("### Search Results")
 
     # Perform search when button is clicked
-    if search_button and image_query and text_query:
-        images = perform_search(image_query, text_query)
+    if search_button and (image_query or text_query):
+        print(weight)
+        if text_query:
+            images = perform_search(image_query, text_query, weight)
+        else:
+            images = perform_search(
+                image_query, 'generic text goes here', weight)
         display_search_results(images)
 
 

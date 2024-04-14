@@ -92,10 +92,13 @@ class Classifier(nn.Module):
         else:
             self.device = torch.device('cpu')
 
+        self.device = torch.device('cpu')
+
         self.to(self.device)
 
     def forward(self, image):
         # print("Image shape = ", image.shape)
+        image = image.to(self.device)
         x = self.inception(image)
         out = self.last_layer(x).view(-1)
         return out

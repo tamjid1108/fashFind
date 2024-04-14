@@ -53,6 +53,7 @@ kk = 0
 
 for filename in file_list:
     filepath = os.path.join(folder_path, filename)
+
     tensor1 = np.array(returnVisualFeatures(visualiser, filepath))
 
     if filename in captions:
@@ -72,11 +73,15 @@ for filename in file_list:
     training_data[filename] = concatenated_array
     kk += 1
     print("Training K = ", kk)
-    # if kk % 100 == 0:
-    #     print("Training K = ", kk)
+    if kk % 1000 == 0:
+        pickle.dump(training_data, open(
+            f"training_data_checkpoints/training_data_{kk}.pkl", "wb"))
+        print(
+            f"saved checkpoint to disk at training_data_checkpoints/training_data_{kk}.pkl")
 
+# vector_dim = len(next(iter(training_data.values())))
+vector_dim = 2346
 
-vector_dim = len(next(iter(training_data.values())))
 t = AnnoyIndex(vector_dim, distance_mode)
 
 for i, vector in enumerate(training_data.values()):
